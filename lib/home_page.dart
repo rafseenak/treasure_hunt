@@ -12,26 +12,27 @@ class BtList extends StatefulWidget {
 }
 
 class _BtListState extends State<BtList> {
+  final FlutterBluePlus flutterBlue = FlutterBluePlus.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: const Color.fromARGB(0, 230, 135, 135),
           elevation: 0,
         ),
         backgroundColor: Colors.white,
         floatingActionButton: StreamBuilder<bool>(
-          stream: FlutterBluePlus.isScanning,
+          stream: flutterBlue.isScanning,
           initialData: false,
           builder: (c, snapshot) {
             if (snapshot.data!) {
               return FloatingActionButton(
                 onPressed: () {
                   if (Platform.isAndroid) {
-                    FlutterBluePlus.turnOn();
+                    FlutterBluePlus.instance.turnOn();
                   }
-                  FlutterBluePlus.stopScan();
+                  flutterBlue.stopScan();
                 },
                 backgroundColor: Colors.red,
                 child: const Icon(
@@ -45,7 +46,7 @@ class _BtListState extends State<BtList> {
                   Icons.bluetooth,
                   color: Colors.white,
                 ),
-                onPressed: () => FlutterBluePlus.startScan(
+                onPressed: () => flutterBlue.startScan(
                   timeout: const Duration(seconds: 10),
                 ),
               );
@@ -53,7 +54,7 @@ class _BtListState extends State<BtList> {
           },
         ),
         body: StreamBuilder<List<ScanResult>>(
-          stream: FlutterBluePlus.scanResults,
+          stream: flutterBlue.scanResults,
           initialData: const [],
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -66,18 +67,23 @@ class _BtListState extends State<BtList> {
                     final scanResult = scanResults[index];
                     final device = scanResult.device;
                     final deviceName =
-                        device.advName.isNotEmpty ? device.advName : 'Unknown Device';
-                    final deviceAddress = device.remoteId.toString();
+                        device.name.isNotEmpty ? device.name : 'Unknown Device';
+                    final deviceAddress = device.id.toString();
 
-                    // if (scanResult.advertisementData.connectable) {
+                    if (scanResult.advertisementData.connectable) {
                       return ListTile(
                         tileColor: Colors.white60,
                         title: Text(deviceName),
                         subtitle: Text(deviceAddress),
                         onTap: () async {
-                          FlutterBluePlus.stopScan();
+                          flutterBlue.stopScan();
+                          device.connect(autoConnect: false);
+                          // print("done");
                         },
                       );
+                    } else {
+                      return Container(); // or any placeholder widget when not connectable
+                    }
                   },
                 ),
               );
