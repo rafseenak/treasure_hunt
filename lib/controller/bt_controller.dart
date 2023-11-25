@@ -18,12 +18,17 @@ class BluetoothController extends GetxController {
 
   // List of hardcoded device IDs to search for
   final List<String> desiredDeviceIds = [
-    '01:E3:8F:7A:7D:7A',
-    '3C:79:F4:F8:8C:A6',
-    '43:E8:39:49:B7:88',
-    '59:87:08:76:67:BA',
+    "12:E0:3F:BB:68:47"
+    // '3B:EF:E1:F9:0F:15',
+    // '01:E3:8F:7A:7D:7A',
+    // '3C:79:F4:F8:8C:A6',
+    // '43:E8:39:49:B7:88',
+    // '59:87:08:76:67:BA',
     // '12:EB:56:40:C3:66',
   ];
+
+  StreamController<Map<String, int>> rssiUpdatesStreamController =
+      StreamController<Map<String, int>>.broadcast();
 
   BluetoothController() {
     // Listen to scan events
@@ -57,6 +62,13 @@ class BluetoothController extends GetxController {
     });
   }
 
+  @override
+  void dispose() {
+    deviceInfoStreamController.close();
+    rssiUpdatesStreamController.close();
+    super.dispose();
+  }
+
   // Stream for device info changes (BluetoothDevice and RSSI)
   Stream<Map<BluetoothDevice, int>> get deviceInfoStream =>
       deviceInfoStreamController.stream;
@@ -75,5 +87,12 @@ class BluetoothController extends GetxController {
   // Connect to device
   Future<void> connectToDevice(BluetoothDevice device) async {
     await device.connect();
+  }
+
+  List<ScanResult> getDevicesWithIds(List<String> deviceIds) {
+    return devices
+        .where((result) => deviceIds.contains(result.device.id.id))
+        .map((result) => result)
+        .toList();
   }
 }

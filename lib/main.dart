@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.cyan,
       ),
-      home: const BluetoothPage(),
+      home: const FirstScreen(),
       // routes: {
       //   'first_screen': (ctx) {
       //     return const FirstScreen();
