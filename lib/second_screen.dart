@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'controller/bt_controller.dart';
 
@@ -31,16 +30,6 @@ class _SecondScreenState extends State<SecondScreen> {
     setState(() {
       allFound = true;
     });
-
-    // Fluttertoast.showToast(
-    //   msg: 'All found!',
-    //   toastLength: Toast.LENGTH_SHORT,
-    //   gravity: ToastGravity.BOTTOM,
-    //   timeInSecForIosWeb: 1,
-    //   backgroundColor: Colors.green,
-    //   textColor: Colors.red,
-    //   fontSize: 16.0,
-    // );
     setState(() {
       devices = bluetoothController.getDevicesWithIds(["78:21:84:9D:B1:B2"]);
     });
@@ -72,7 +61,7 @@ class _SecondScreenState extends State<SecondScreen> {
   }
 
   String displayText = 'FIND ME';
-  Color bgColor = Colors.pink;
+  Color bgColor = Colors.white;
   String btText = 'START TRACKING';
   bool verifyOrNot = true;
   void updateText(String text, Color clr, String bttxt) {
@@ -83,20 +72,12 @@ class _SecondScreenState extends State<SecondScreen> {
     });
   }
 
-  void verify() {
-    print('verified');
-  }
-
-  void noVerify() {
-    print('Not verified');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: AnimatedContainer(
-          duration: const Duration(seconds: 1),
+          duration: const Duration(seconds: 2),
           color: bgColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -128,39 +109,50 @@ class _SecondScreenState extends State<SecondScreen> {
                     Padding(
                       padding: const EdgeInsets.all(10),
                       child: ElevatedButton(
-                        // onPressed: () {
-                        //   updateText('text', Colors.red, 'bttxt');
-                        // },
-                        onPressed: () {
-                          if (isNear(devices[0].rssi)) {
-                            updateText(
-                                'Wow! You are Near to the Device. Did You Find It, Then You Can Check The Result Below.',
-                                Colors.green,
-                                'VERIFY');
-                          } else {
-                            updateText(
-                                'Oops! You are Far Away from the Device, Try More...',
-                                Colors.red,
-                                'TRACK AGAIN');
-                          }
-                          devices[0].device.connect();
-                        },
+                        onPressed: (btText == 'VERIFY')
+                            ? () {
+                                Navigator.pushNamed(
+                                  context,
+                                  'qrread',
+                                  arguments: devices[0].device.id.id,
+                                );
+                              }
+                            : () {
+                                if (isNear(devices[0].rssi)) {
+                                  updateText(
+                                    'Wow! You are Near to the Device. Did You Find It, Then You Can Check The Result Below.',
+                                    Colors.green,
+                                    'VERIFY',
+                                  );
+                                } else {
+                                  updateText(
+                                    'Oops! You are Far Away from the Device, Try More...',
+                                    Colors.red,
+                                    'TRACK AGAIN',
+                                  );
+                                }
+                                devices[0].device.connect();
+                              },
                         child: Text(btText),
                       ),
                     ),
                   ],
                 )
               else
-                Center(
-                  child: Text(
-                    'LOADING...${players().toString()}',
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                const Column(
+                  children: [
+                    Center(
+                      child: Text(
+                        'LOADING...',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                  ],
+                )
             ],
           ),
         ),
@@ -168,13 +160,3 @@ class _SecondScreenState extends State<SecondScreen> {
     );
   }
 }
-// ElevatedButton(
-//     onPressed: isNear(devices[0].rssi)
-//         ? () {
-//             verify;
-//           }
-//         : () {
-//             noVerify;
-//           },
-//     child: const Text('CLICK ME'),
-//   ),
