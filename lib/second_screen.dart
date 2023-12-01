@@ -64,7 +64,7 @@ class _SecondScreenState extends State<SecondScreen> {
     if (btText == 'TRACK') {
       if (isNear(devices[0].rssi)) {
         updateText(
-          'Wow! You are Near to the Device. Did You Find It,\nYou Can Check The Result Below.',
+          'Wow! You are Near to the Device. Did You Find It?\nYou Can Check The Result Below.',
           Colors.green,
           'VERIFY',
         );
