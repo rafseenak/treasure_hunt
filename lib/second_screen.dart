@@ -60,10 +60,44 @@ class _SecondScreenState extends State<SecondScreen> {
     }
   }
 
+  void buttonAction() {
+    if (btText == 'TRACK') {
+      if (isNear(devices[0].rssi)) {
+        updateText(
+          'Wow! You are Near to the Device. Did You Find It, Then You Can Check The Result Below.',
+          Colors.green,
+          'VERIFY',
+        );
+      } else {
+        updateText(
+          'Oops! You are Far Away from the Device, Try More...',
+          Colors.red,
+          'TRACK AGAIN',
+        );
+      }
+      devices[0].device.connect();
+    } else if (btText == 'VERIFY') {
+      Navigator.pushNamed(
+        context,
+        'qrread',
+        arguments: devices[0].device.id.id,
+      );
+    } else if (btText == 'TRACK AGAIN') {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) {
+            return const SecondScreen(noOfPlayers: '1');
+          },
+        ),
+      );
+    }
+  }
+
   String displayText = 'FIND ME';
   Color bgColor = Colors.white;
-  String btText = 'START TRACKING';
+  String btText = 'TRACK';
   bool verifyOrNot = true;
+
   void updateText(String text, Color clr, String bttxt) {
     setState(() {
       displayText = text;
@@ -109,30 +143,7 @@ class _SecondScreenState extends State<SecondScreen> {
                     Padding(
                       padding: const EdgeInsets.all(10),
                       child: ElevatedButton(
-                        onPressed: (btText == 'VERIFY')
-                            ? () {
-                                Navigator.pushNamed(
-                                  context,
-                                  'qrread',
-                                  arguments: devices[0].device.id.id,
-                                );
-                              }
-                            : () {
-                                if (isNear(devices[0].rssi)) {
-                                  updateText(
-                                    'Wow! You are Near to the Device. Did You Find It, Then You Can Check The Result Below.',
-                                    Colors.green,
-                                    'VERIFY',
-                                  );
-                                } else {
-                                  updateText(
-                                    'Oops! You are Far Away from the Device, Try More...',
-                                    Colors.red,
-                                    'TRACK AGAIN',
-                                  );
-                                }
-                                devices[0].device.connect();
-                              },
+                        onPressed: buttonAction,
                         child: Text(btText),
                       ),
                     ),
