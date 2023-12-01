@@ -34,9 +34,7 @@ class QRViewExampleState extends State<QRViewExample> {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
       setState(() {
-        print('Scanned1111111111111');
         qrText = scanData.code.toString();
-        print('qrText is $qrText and $btId');
       });
 
       if (btId == qrText) {

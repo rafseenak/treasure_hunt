@@ -26,35 +26,32 @@ class CenteredText2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Text(
-            'OOPS! YOU ARE WRONG',
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text(
+              'OOPS! YOU ARE WRONG',
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          const Text(
-            "DON'T WORRY!",
-            style: TextStyle(
-              fontSize: 23,
-              fontWeight: FontWeight.bold,
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (ctx) {
+                      return const SecondScreen(noOfPlayers: '1');
+                    },
+                  ),
+                );
+              },
+              child: const Text('TRY AGAIN'),
             ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              MaterialPageRoute(
-                builder: (ctx) {
-                  return const SecondScreen(noOfPlayers: '1');
-                },
-              );
-            },
-            child: const Text('TRY AGAIN'),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

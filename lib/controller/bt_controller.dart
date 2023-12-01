@@ -23,9 +23,6 @@ class BluetoothController extends GetxController {
 
   BluetoothController() {
     flutterBlue.scan().listen((scanResult) async {
-      print(
-        "Scanning ${scanResult.device.name} and ${scanResult.device.id.id}",
-      );
       devices.add(scanResult);
       deviceInfoStreamController.add({scanResult.device: scanResult.rssi});
       if (desiredDeviceIds.contains(scanResult.device.id.id)) {
