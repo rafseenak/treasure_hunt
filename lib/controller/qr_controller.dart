@@ -25,7 +25,6 @@ class QRViewExampleState extends State<QRViewExample> {
               onQRViewCreated: _onQRViewCreated,
             ),
           ),
-          // (btId == qrText) ? const Text("Ok") : const Text("Not Ok"),
         ],
       ),
     );

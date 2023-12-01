@@ -28,6 +28,7 @@ class CenteredText2 extends StatelessWidget {
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Text(
             'OOPS! YOU ARE WRONG',
