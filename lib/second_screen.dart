@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:frontend/controller/qr_controller.dart';
 import 'package:get/get.dart';
 import 'controller/bt_controller.dart';
 
 class SecondScreen extends StatefulWidget {
   final String noOfPlayers;
-  const SecondScreen({super.key, required this.noOfPlayers});
+  final int players;
+  final List<String> dlist;
+  SecondScreen({super.key, required this.noOfPlayers, required this.dlist})
+      : players = int.tryParse(noOfPlayers) ?? 0;
   @override
   State<SecondScreen> createState() => _SecondScreenState();
 }
@@ -31,7 +35,7 @@ class _SecondScreenState extends State<SecondScreen> {
       allFound = true;
     });
     setState(() {
-      devices = bluetoothController.getDevicesWithIds(["78:21:84:9D:B1:B2"]);
+      devices = bluetoothController.getDevicesWithIds([widget.dlist[0]]);
     });
   }
 
@@ -46,25 +50,11 @@ class _SecondScreenState extends State<SecondScreen> {
     return rssi >= nearThreshold;
   }
 
-  players() {
-    if (widget.noOfPlayers == '1') {
-      return 1;
-    }
-    if (widget.noOfPlayers == '2') {
-      return 2;
-    }
-    if (widget.noOfPlayers == '3') {
-      return 3;
-    } else if (widget.noOfPlayers == '4') {
-      return 4;
-    }
-  }
-
-  void buttonAction() {
+  buttonAction() {
     if (btText == 'TRACK') {
       if (isNear(devices[0].rssi)) {
         updateText(
-          'Wow! You are Near to the Device. Did You Find It?\nYou Can Check The Result Below.',
+          'Wow! You are Near to the Device.\nDid You Find It?\nYou Can Check The Result Below.',
           Colors.green,
           'VERIFY',
         );
@@ -77,23 +67,32 @@ class _SecondScreenState extends State<SecondScreen> {
       }
       devices[0].device.connect();
     } else if (btText == 'VERIFY') {
-      Navigator.pushNamed(
-        context,
-        'qrread',
-        arguments: devices[0].device.id.id,
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) {
+            return QRViewExample(
+              btId: devices[0].device.id.id,
+              dlist: widget.dlist,
+            );
+          },
+        ),
       );
     } else if (btText == 'TRACK AGAIN') {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (ctx) {
-            return const SecondScreen(noOfPlayers: '1');
+            return SecondScreen(
+              noOfPlayers: widget.dlist.length.toString(),
+              dlist: widget.dlist,
+            );
           },
         ),
       );
+      // Navigator.pushReplacementNamed(context, 'second_screen');
     }
   }
 
-  String displayText = 'FIND ME';
+  String displayText = 'FIND ME.';
   Color bgColor = Colors.white;
   String btText = 'TRACK';
   bool verifyOrNot = true;
@@ -115,6 +114,7 @@ class _SecondScreenState extends State<SecondScreen> {
           color: bgColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               if (allFound)
                 Column(
@@ -132,18 +132,18 @@ class _SecondScreenState extends State<SecondScreen> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Image.network(
-                        'https://th.bing.com/th?id=OIP.7uXDDlh5zaXitzyw0b1uDAHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2',
-                        width: 250,
-                        height: 250,
+                    const Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Image(
+                        image: AssetImage('assets/toy1.png'),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(10),
                       child: ElevatedButton(
-                        onPressed: buttonAction,
+                        onPressed: () {
+                          buttonAction();
+                        },
                         child: Text(btText),
                       ),
                     ),

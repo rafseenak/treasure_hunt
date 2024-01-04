@@ -15,7 +15,7 @@ class BluetoothController extends GetxController {
 
   final List<String> desiredDeviceIds = [
     "78:21:84:9D:B1:B2",
-    // '44:17:93:7C:65:02'
+    // "44:17:93:7C:65:02",
   ];
 
   StreamController<Map<String, int>> rssiUpdatesStreamController =

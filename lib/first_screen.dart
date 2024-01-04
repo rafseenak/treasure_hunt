@@ -31,7 +31,12 @@ class FirstScreen extends StatelessWidget {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (ctx) {
-                              return const SecondScreen(noOfPlayers: '1');
+                              return SecondScreen(
+                                noOfPlayers: '1',
+                                dlist: const [
+                                  "78:21:84:9D:B1:B2",
+                                ],
+                              );
                             },
                           ),
                         );
@@ -50,7 +55,13 @@ class FirstScreen extends StatelessWidget {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (ctx) {
-                              return const SecondScreen(noOfPlayers: '2');
+                              return SecondScreen(
+                                noOfPlayers: '2',
+                                dlist: const [
+                                  "78:21:84:9D:B1:B2",
+                                  "44:17:93:7C:65:02",
+                                ],
+                              );
                             },
                           ),
                         );
@@ -61,49 +72,61 @@ class FirstScreen extends StatelessWidget {
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: SizedBox(
-                    width: 100,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (ctx) {
-                              return const SecondScreen(noOfPlayers: '3');
-                            },
-                          ),
-                        );
-                      },
-                      child: const Text('3'),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: SizedBox(
-                    width: 100,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (ctx) {
-                              return const SecondScreen(noOfPlayers: '4');
-                            },
-                          ),
-                        );
-                      },
-                      child: const Text('4'),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     Padding(
+            //       padding: const EdgeInsets.all(20),
+            //       child: SizedBox(
+            //         width: 100,
+            //         height: 50,
+            //         child: ElevatedButton(
+            //           onPressed: () {
+            //             Navigator.of(context).push(
+            //               MaterialPageRoute(
+            //                 builder: (ctx) {
+            //                   return SecondScreen(
+            //                     noOfPlayers: '3',
+            //                     dlist: const [
+            //                       "78:21:84:9D:B1:B2",
+            //                       // "44:17:93:7C:65:02",
+            //                     ],
+            //                   );
+            //                 },
+            //               ),
+            //             );
+            //           },
+            //           child: const Text('3'),
+            //         ),
+            //       ),
+            //     ),
+            //     Padding(
+            //       padding: const EdgeInsets.all(20),
+            //       child: SizedBox(
+            //         width: 100,
+            //         height: 50,
+            //         child: ElevatedButton(
+            //           onPressed: () {
+            //             Navigator.of(context).push(
+            //               MaterialPageRoute(
+            //                 builder: (ctx) {
+            //                   return SecondScreen(
+            //                     noOfPlayers: '4',
+            //                     dlist: const [
+            //                       "78:21:84:9D:B1:B2",
+            //                       // "44:17:93:7C:65:02",
+            //                     ],
+            //                   );
+            //                 },
+            //               ),
+            //             );
+            //           },
+            //           child: const Text('4'),
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       ),

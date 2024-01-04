@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/next_screen.dart';
+import 'package:frontend/result.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRViewExample extends StatefulWidget {
-  const QRViewExample({super.key});
+  final String btId;
+  final List<String> dlist;
+  const QRViewExample({super.key, required this.btId, required this.dlist});
   @override
   QRViewExampleState createState() => QRViewExampleState();
 }
@@ -11,11 +15,8 @@ class QRViewExampleState extends State<QRViewExample> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
   String qrText = "VERIFY";
-  String btId = '';
   @override
   Widget build(BuildContext context) {
-    btId = ModalRoute.of(context)!.settings.arguments.toString();
-
     return Scaffold(
       body: Column(
         children: [
@@ -23,6 +24,7 @@ class QRViewExampleState extends State<QRViewExample> {
             child: QRView(
               key: qrKey,
               onQRViewCreated: _onQRViewCreated,
+              overlay: QrScannerOverlayShape(),
             ),
           ),
         ],
@@ -36,16 +38,37 @@ class QRViewExampleState extends State<QRViewExample> {
       setState(() {
         qrText = scanData.code.toString();
       });
-
-      if (btId == qrText) {
-        Navigator.pushNamed(
-          context,
-          'rslt',
-        );
+      List<String> updatedDList = List.from(widget.dlist);
+      if (widget.btId == qrText) {
+        updatedDList.remove(widget.btId);
+        if (updatedDList.isEmpty) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) {
+                return const CenteredText();
+              },
+            ),
+          );
+        } else {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) {
+                return NextScreen(
+                  dlist: updatedDList,
+                );
+              },
+            ),
+          );
+        }
       } else {
-        Navigator.pushNamed(
-          context,
-          'rslt2',
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (ctx) {
+              return CenteredText2(
+                dlist: widget.dlist,
+              );
+            },
+          ),
         );
       }
     });

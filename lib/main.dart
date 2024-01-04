@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/first_screen.dart';
 import 'package:frontend/result.dart';
-import 'controller/qr_controller.dart';
+import 'package:frontend/splash_screen.dart';
 
 main() {
   runApp(const MyApp());
@@ -16,11 +15,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.cyan,
       ),
-      home: const FirstScreen(),
+      home: const SplashScreen(),
       routes: {
-        'qrread': (context) => const QRViewExample(),
         'rslt': (context) => const CenteredText(),
-        'rslt2': (context) => const CenteredText2(),
       },
     );
   }
